@@ -42,7 +42,6 @@ openssl req -new -key $DIRECTORY/$1.key -out $DIRECTORY/$1.csr -subj "/C=CA/ST=H
 # Sign the client certificate with our CA cert.  Unlike signi:wqng our own server cert, this is what we want to do.
 openssl x509 -req -days 365 -in $DIRECTORY/$1.csr -CA $CACRT -CAkey $CAKEY -set_serial 01 -out $DIRECTORY/$1.crt
 
-echo `$3@$1`
 ssh -i $2 $3@$1 "mkdir -p /etc/cloudlabs/certs" 
 
 scp -p -i $2 /etc/cloudlabs/certs/clients/$1.key $3@$1:/etc/cloudlabs/certs/client.key

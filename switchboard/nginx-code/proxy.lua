@@ -14,8 +14,11 @@ end
 
 local function trimPortFromSubdomain (subdomain)
   local port = getPortFromSubdomain(subdomain)
-  local subdomain = subdomain:gsub("-"..port.."$", "")
-  return subdomain
+  if port == nil or port == "" then
+	return subdomain
+  else 
+	return subdomain:gsub("-"..port.."$", "")
+  end
 end
 
 
@@ -26,13 +29,14 @@ ngx.log(ngx.ERR, " HOST : ",ngx.var.host);
 -- Parse sub and main domain
 vsub,vdom = ngx.var.host:match("([^.]*).(.*)");
 
-log(ERR, " VSUB : ",vsub);
-log(ERR, " VSUB : ",vsub);
-
-log(ERR, " VDOM : ",trimmedsub);
-
+local port = getPortFromSubdomain(vsub)
 local hnip = submap[trimPortFromSubdomain(vsub)]
 
-log(ERR, "IP : ",hnip)
+log(DBG, "IP : ",hnip)
 
 ngx.var.proxy_machine=hnip
+ngx.req.set_header("X-Target-Port",port)
+
+
+
+

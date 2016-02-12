@@ -1,3 +1,4 @@
+#!/bin/bash
 
 
 DIRECTORY=/etc/cloudlabs/certs
@@ -21,5 +22,10 @@ fi
 
 
 # Create the CA Key and Certificate
-# This will mainly be use for signing Client Certs but can be used for anything                       
-openssl genrsa -out $DIRECTORY/ca.key 4096                                                                                                     openssl req -new -x509 -days 365 -key $DIRECTORY/ca.key -out $DIRECTORY/ca.crt  
+# This will mainly be use for signing Client Certs but can be used for anything
+
+CAKEY="$DIRECTORY/ca.key"
+CACRT="$DIRECTORY/ca.crt"
+
+openssl genrsa -out $CAKEY 4096                                                                
+openssl req -new -x509 -days 365 -key $CAKEY -out $CACRT  
